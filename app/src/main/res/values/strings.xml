@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">MyBook</string>
     <string name="search_book">Search book</string>
+    <string name="default_null"> - </string>
+    <string name="about_book">About this book</string>
+    <string name="publish_date">Publish Date</string>
+    <string name="pages">Pages</string>
+    <string name="book">Book</string>
+    <string name="cover">cover</string>
+    <string name="back">back</string>
+    <string name="retry">Retry</string>
+    <string name="offline">You are offline</string>
 </resources>

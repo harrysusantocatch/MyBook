@@ -1,6 +1,7 @@
 package com.book.mybook.activities.home.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,15 +9,21 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.book.mybook.R
+import com.book.mybook.activities.home.ui.DetailItemFragment
+import com.book.mybook.activities.home.ui.MainActivity
 import com.book.mybook.model.Item
+import com.book.mybook.model.VolumeInfo
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.adapter_item.view.*
 
-class ItemGridAdapter(val context: Context, val items: ArrayList<Item>): RecyclerView.Adapter<ItemGridAdapter.ViewHolder>() {
+class ItemGridAdapter(private val context: Context,  private val items: ArrayList<Item>):
+    RecyclerView.Adapter<ItemGridAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+        var rootLayout: CardView = view.rootLayout
         var imageView: ImageView = view.imageView
         var titleView: TextView = view.title
         var authorsView: TextView = view.authors
@@ -35,19 +42,23 @@ class ItemGridAdapter(val context: Context, val items: ArrayList<Item>): Recycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        Picasso.get().load(item.volumeInfo.imageLinks.thumbnail).into(holder.imageView)
+        Picasso.get().load(item.volumeInfo.imageLinks?.thumbnail).into(holder.imageView)
         holder.titleView.text = item.volumeInfo.title
         item.volumeInfo.authors?.let {
-            holder.authorsView.text = getAutors(it)
+            holder.authorsView.text = item.volumeInfo.getStringAutors(it)
         }
         holder.ratingView.rating = item.volumeInfo.averageRating
+        holder.rootLayout.setOnClickListener {
+            goToItemDetail(item)
+        }
     }
 
-    private fun getAutors(authors: Array<String>): String {
-        var result : String = ""
-        for (author in authors){
-            result = "$result$author, "
-        }
-        return result.substring(0, result.length-2)
+    private fun goToItemDetail(item: Item) {
+        val fragment = DetailItemFragment()
+        val args = Bundle()
+        args.putSerializable(fragment.labelParam, item)
+        fragment.arguments = args
+        val mainContext = (context as MainActivity)
+        mainContext.replaceFragment(fragment)
     }
 }
