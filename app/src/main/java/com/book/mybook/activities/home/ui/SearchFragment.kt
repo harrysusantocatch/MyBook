@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.book.mybook.R
 import com.book.mybook.activities.home.adapter.ItemGridAdapter
@@ -26,8 +27,9 @@ class SearchFragment : Fragment(), BookContract.View,
     private lateinit var adapter: ItemGridAdapter
     private var items: ArrayList<Item> = arrayListOf()
     private lateinit var lastTextSearch: String
-    private val total = 15
+    private val total = 5
     private var index = 0
+    private var lastFetchItem = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +44,23 @@ class SearchFragment : Fragment(), BookContract.View,
         val viewFragment = inflater.inflate(R.layout.fragment_search, container, false)
         viewFragment.recycleView.layoutManager = LinearLayoutManager(context)
         viewFragment.recycleView.adapter = adapter
+        viewFragment.recycleView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                if(layoutManager.findLastVisibleItemPosition() == items.size-1 && lastFetchItem > 0){
+                    index += total + 1
+                    presenter.getBooks(lastTextSearch, total, index)
+                }
+            }
+        })
         viewFragment.searchView.setOnQueryTextListener(this)
         viewFragment.buttonRetry.setOnClickListener(this)
         return viewFragment
     }
 
     private fun loadFirstData() {
-        lastTextSearch = "Big Fish"
+        lastTextSearch = "The Planet"
         presenter.getBooks(lastTextSearch, total, index)
     }
 
@@ -57,8 +69,13 @@ class SearchFragment : Fragment(), BookContract.View,
     }
 
     override fun viewData(items: ArrayList<Item>) {
-        this.items.addAll(items)
-        activity?.runOnUiThread { adapter.notifyDataSetChanged() }
+        if(items.size > 0) {
+            this.items.addAll(items)
+            lastFetchItem = items.size
+            activity?.runOnUiThread { adapter.notifyDataSetChanged() }
+        }else{
+            lastFetchItem = 0
+        }
     }
 
     override fun checkConnection() {

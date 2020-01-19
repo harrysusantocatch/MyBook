@@ -10,7 +10,7 @@ import com.book.mybook.model.Item
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail_item.view.*
 
-class DetailItemFragment : Fragment(), View.OnClickListener {
+class ItemDetailFragment : Fragment(), View.OnClickListener {
 
     val labelParam = "ITEM"
     private var item: Item? = null

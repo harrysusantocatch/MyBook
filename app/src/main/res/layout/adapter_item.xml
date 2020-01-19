@@ -15,7 +15,6 @@
             android:id="@+id/imageView"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_default_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:contentDescription="@string/cover" />

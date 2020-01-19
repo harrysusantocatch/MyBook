@@ -12,7 +12,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        replaceFragment(SearchFragment())
+        replaceFirstFragment(SearchFragment())
     }
 
     @SuppressLint("PrivateResource")
@@ -27,6 +27,21 @@ class MainActivity : FragmentActivity() {
                 )
                 .replace(R.id.fragment_container, fragment, fragment.javaClass.simpleName)
                 .addToBackStack(name)
+                .commit()
+        }
+    }
+
+    @SuppressLint("PrivateResource")
+    fun replaceFirstFragment(fragment: Fragment) {
+        val name = fragment.javaClass.name
+        val fragmentPopped = supportFragmentManager.popBackStackImmediate(name, 0)
+        if(!fragmentPopped) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    design_bottom_sheet_slide_in,
+                    R.anim.design_bottom_sheet_slide_out
+                )
+                .replace(R.id.fragment_container, fragment, fragment.javaClass.simpleName)
                 .commit()
         }
     }

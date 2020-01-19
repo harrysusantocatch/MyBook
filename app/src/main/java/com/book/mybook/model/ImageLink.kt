@@ -1,3 +1,5 @@
 package com.book.mybook.model
 
-class ImageLink(var thumbnail: String?)
+import java.io.Serializable
+
+class ImageLink(var thumbnail: String?): Serializable

@@ -5,17 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.book.mybook.R
-import com.book.mybook.activities.home.ui.DetailItemFragment
+import com.book.mybook.activities.home.ui.ItemDetailFragment
 import com.book.mybook.activities.home.ui.MainActivity
 import com.book.mybook.model.Item
-import com.book.mybook.model.VolumeInfo
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.adapter_item.view.*
 
@@ -42,7 +40,9 @@ class ItemGridAdapter(private val context: Context,  private val items: ArrayLis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        Picasso.get().load(item.volumeInfo.imageLinks?.thumbnail).into(holder.imageView)
+        item.volumeInfo.imageLinks?.let {
+            Picasso.get().load(it.thumbnail).into(holder.imageView)
+        }
         holder.titleView.text = item.volumeInfo.title
         item.volumeInfo.authors?.let {
             holder.authorsView.text = item.volumeInfo.getStringAutors(it)
@@ -54,7 +54,7 @@ class ItemGridAdapter(private val context: Context,  private val items: ArrayLis
     }
 
     private fun goToItemDetail(item: Item) {
-        val fragment = DetailItemFragment()
+        val fragment = ItemDetailFragment()
         val args = Bundle()
         args.putSerializable(fragment.labelParam, item)
         fragment.arguments = args
