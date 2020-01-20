@@ -34,8 +34,12 @@ class HomeFragment : Fragment(), TrendingContract.View,
         adapterTrending = ItemAdapter(context!!, trendingItems)
         adapterBestSeller = ItemAdapter(context!!, bestSellerItems)
         trendingPresenter = TrendingPresenter(this)
-        trendingPresenter.getTrendingBooks("Home Earth", 8, 0)
         bestSellerPresenter = BestSellerPresenter(this)
+        getData()
+    }
+
+    private fun getData() {
+        trendingPresenter.getTrendingBooks("Home Earth", 8, 0)
         bestSellerPresenter.getBestSellerBooks("Alien & Planet", 8, 0)
     }
 
@@ -44,6 +48,7 @@ class HomeFragment : Fragment(), TrendingContract.View,
         savedInstanceState: Bundle?): View? {
         viewFragment = inflater.inflate(R.layout.fragment_home, container, false)
         viewFragment.buttonSearch.setOnClickListener(this)
+        viewFragment.buttonHomeRetry.setOnClickListener(this)
         setAdapterManager()
         return viewFragment
     }
@@ -88,11 +93,15 @@ class HomeFragment : Fragment(), TrendingContract.View,
                     (it as MainActivity).replaceFragment(SearchFragment())
                 }
             }
+            R.id.buttonHomeRetry ->{
+                getData()
+            }
         }
     }
 
     override fun viewTrendingData(items: ArrayList<Item>) {
         activity?.runOnUiThread {
+            viewFragment.cardOffline.visibility = View.GONE
             if(items.isNotEmpty()) {
                 this.trendingItems.addAll(items)
                 adapterTrending.notifyDataSetChanged()

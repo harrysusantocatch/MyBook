@@ -51,6 +51,7 @@ class SearchFragment : Fragment(), BookContract.View,
                 }
             }
         })
+        viewFragment.searchView.requestFocus()
         viewFragment.searchView.setOnQueryTextListener(this)
         viewFragment.buttonRetry.setOnClickListener(this)
         return viewFragment
