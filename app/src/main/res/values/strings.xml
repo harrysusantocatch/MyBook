@@ -10,4 +10,10 @@
     <string name="back">back</string>
     <string name="retry">Retry</string>
     <string name="offline">You are offline</string>
+    <string name="book_sore">Book Store</string>
+    <string name="search">search</string>
+    <string name="about_store">Dapatkan buku - buku pilihan terbaik disini dengan berbagai macam pilihan</string>
+    <string name="buku_terbaru">Buku Terbaru</string>
+    <string name="buku_best">Buku Best Seller</string>
+    <string name="buku_trending">Buku Trending Saat Ini</string>
 </resources>

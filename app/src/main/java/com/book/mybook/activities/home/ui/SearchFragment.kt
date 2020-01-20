@@ -2,17 +2,16 @@ package com.book.mybook.activities.home.ui
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.book.mybook.R
-import com.book.mybook.activities.home.adapter.ItemGridAdapter
+import com.book.mybook.activities.home.adapter.ListItemAdapter
 import com.book.mybook.activities.home.contract.BookContract
 import com.book.mybook.activities.home.presenter.BookPresenter
 import com.book.mybook.extension.isNetworkConnected
@@ -24,7 +23,7 @@ class SearchFragment : Fragment(), BookContract.View,
     SearchView.OnQueryTextListener, View.OnClickListener {
 
     private lateinit var presenter: BookPresenter
-    private lateinit var adapter: ItemGridAdapter
+    private lateinit var adapter: ListItemAdapter
     private var items: ArrayList<Item> = arrayListOf()
     private lateinit var lastTextSearch: String
     private val total = 5
@@ -34,9 +33,7 @@ class SearchFragment : Fragment(), BookContract.View,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = BookPresenter(this)
-        val myActivity = context as MainActivity
-        adapter = ItemGridAdapter(myActivity, items)
-        loadFirstData()
+        adapter = ListItemAdapter(context!!, items)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,11 +54,6 @@ class SearchFragment : Fragment(), BookContract.View,
         viewFragment.searchView.setOnQueryTextListener(this)
         viewFragment.buttonRetry.setOnClickListener(this)
         return viewFragment
-    }
-
-    private fun loadFirstData() {
-        lastTextSearch = "The Planet"
-        presenter.getBooks(lastTextSearch, total, index)
     }
 
     override fun showMessage(message: String) {

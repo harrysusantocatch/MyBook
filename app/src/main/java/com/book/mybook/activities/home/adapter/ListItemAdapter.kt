@@ -15,10 +15,11 @@ import com.book.mybook.activities.home.ui.ItemDetailFragment
 import com.book.mybook.activities.home.ui.MainActivity
 import com.book.mybook.model.Item
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.adapter_item.view.*
 
-class ItemGridAdapter(private val context: Context,  private val items: ArrayList<Item>):
-    RecyclerView.Adapter<ItemGridAdapter.ViewHolder>() {
+class ListItemAdapter(private val context: Context, private val items: ArrayList<Item>):
+    RecyclerView.Adapter<ListItemAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         var rootLayout: CardView = view.rootLayout
@@ -41,7 +42,8 @@ class ItemGridAdapter(private val context: Context,  private val items: ArrayLis
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         item.volumeInfo.imageLinks?.let {
-            Picasso.get().load(it.thumbnail).into(holder.imageView)
+            Picasso.get().load(it.thumbnail).transform(RoundedCornersTransformation(8, 0)).
+                into(holder.imageView)
         }
         holder.titleView.text = item.volumeInfo.title
         item.volumeInfo.authors?.let {
